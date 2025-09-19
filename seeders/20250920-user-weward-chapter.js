@@ -1,0 +1,97 @@
+'use strict';
+
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    return queryInterface.bulkInsert('user_weward_chapters', [
+      {
+        idUser: 1,
+        idWewardChapter: 1,
+        card1: 1,
+        card2: 2,
+        card3: 3,
+        card4: 1,
+        card5: 2,
+        card6: 3,
+        card7: 1,
+        card8: 2,
+        card9: 3,
+        updatedAt: new Date(),
+      },
+      {
+        idUser: 1,
+        idWewardChapter: 2,
+        card1: 1,
+        card2: 2,
+        card3: 1,
+        card4: 1,
+        card5: 2,
+        card6: 0,
+        card7: 1,
+        card8: 1,
+        card9: 1,
+        updatedAt: new Date(),
+      },
+      {
+        idUser: 1,
+        idWewardChapter: 3,
+        card1: 4,
+        card2: 0,
+        card3: 6,
+        card4: 3,
+        card5: 2,
+        card6: 3,
+        card7: 1,
+        card8: 1,
+        card9: 1,
+        updatedAt: new Date(),
+      },
+      {
+        idUser: 2,
+        idWewardChapter: 1,
+        card1: 7,
+        card2: 0,
+        card3: 0,
+        card4: 0,
+        card5: 1,
+        card6: 1,
+        card7: 1,
+        card8: 2,
+        card9: 1,
+        updatedAt: new Date(),
+      },
+      {
+        idUser: 2,
+        idWewardChapter: 2,
+        card1: 0,
+        card2: 0,
+        card3: 4,
+        card4: 0,
+        card5: 2,
+        card6: 0,
+        card7: 2,
+        card8: 5,
+        card9: 0,
+        updatedAt: new Date(),
+      },
+      {
+        idUser: 2,
+        idWewardChapter: 3,
+        card1: 2,
+        card2: 1,
+        card3: 5,
+        card4: 0,
+        card5: 0,
+        card6: 1,
+        card7: 0,
+        card8: 0,
+        card9: 0,
+        updatedAt: new Date(),
+      },
+    ]);
+  },
+
+  async down(queryInterface, Sequelize) {
+    return queryInterface.bulkDelete('user_weward_chapters', null, {});
+  }
+};
