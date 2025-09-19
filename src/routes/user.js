@@ -44,10 +44,10 @@ router.get('/me', authMiddleware, userController.getMyInfos);
  *           schema:
  *             type: object
  *             properties:
- *               firstName:
+ *               firstname:
  *                 type: string
  *                 example: Jane
- *               lastName:
+ *               lastname:
  *                 type: string
  *                 example: Smith
  *               email:
