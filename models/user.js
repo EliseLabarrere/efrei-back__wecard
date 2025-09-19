@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-  return sequelize.define("User", {
+  const User = sequelize.define("User", {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -46,8 +46,30 @@ module.exports = (sequelize) => {
     secretAnswer: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    accountWeward: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    accountInsta: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    accountDiscord: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   }, {
+    tableName: "users",
     timestamps: true
   });
+
+  User.associate = (models) => {
+    User.hasMany(models.UserWewardChapter, {
+      foreignKey: "idUser",
+      as: "UserWewardChapters"
+    });
+  };
+
+  return User;
 };
