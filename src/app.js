@@ -45,6 +45,14 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
+
+app.use(cors({
+    origin: 'http://localhost:4200',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+}));
+
 sequelize.authenticate()
     .then(() => {
         console.log("✅ Connection to MySQL has been established successfully.");
