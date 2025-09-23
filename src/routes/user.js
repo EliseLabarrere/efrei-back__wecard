@@ -140,6 +140,7 @@ router.post('/reset-password/:token', userController.resetPasswordByMail);
  *     summary: Reset password via secret question
  *     tags:
  *       - User
+ *     security: [] 
  *     requestBody:
  *       required: true
  *       content:
