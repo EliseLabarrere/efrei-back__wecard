@@ -8,13 +8,16 @@ const profileUpdateEmail = require("../templates-mail/profileUpdateEmail");
 const resetPasswordEmail = require("../templates-mail/resetPasswordEmail");
 
 module.exports = {
-  getMyInfos: (req, res) => {
-    res.send({
-      id: req.user.id,
-      firstname: req.user.firstname,
-      lastname: req.user.lastname,
-      email: req.user.email
+  getMyInfos: async (req, res, next) => {
+    const user = await User.findByPk(req.user.id, {
+      attributes: { exclude: ["password", "secretAnswer"] }
     });
+
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé." });
+    }
+
+    res.json(user);
   },
 
   editProfile: async (req, res, next) => {
