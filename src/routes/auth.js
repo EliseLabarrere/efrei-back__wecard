@@ -100,4 +100,44 @@ router.post('/register', authController.register);
  */
 router.post('/login', authController.login);
 
+/**
+ * @swagger
+ * /api/auth/secret-question:
+ *   post:
+ *     summary: Retrieve secret question for a user
+ *     description: Returns the secret question associated with an email. No authentication required.
+ *     security: []
+ *     tags:
+ *       - Authentication
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: john.doe@example.com
+ *     responses:
+ *       200:
+ *         description: Secret question retrieved successfully.
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: true
+ *               email: john.doe@example.com
+ *               question: "Quelle est votre couleur préférée ?"
+ *       400:
+ *         description: Bad request - Email is required.
+ *       404:
+ *         description: No secret question found for this email.
+ *       500:
+ *         description: Internal server error.
+ */
+router.post('/secret-question', authController.getSecretQuestion);
+
 module.exports = router;

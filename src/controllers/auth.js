@@ -44,22 +44,22 @@ module.exports = {
     const chapters = await WewardChapter.findAll();
 
     if (chapters.length > 0) {
-    const userChaptersData = chapters.map(chapter => ({
-      idUser: user.id,
-      idWewardChapter: chapter.id,
-      card1: 0,
-      card2: 0,
-      card3: 0,
-      card4: 0,
-      card5: 0,
-      card6: 0,
-      card7: 0,
-      card8: 0,
-      card9: 0
-    }));
+      const userChaptersData = chapters.map(chapter => ({
+        idUser: user.id,
+        idWewardChapter: chapter.id,
+        card1: 0,
+        card2: 0,
+        card3: 0,
+        card4: 0,
+        card5: 0,
+        card6: 0,
+        card7: 0,
+        card8: 0,
+        card9: 0
+      }));
 
-    await UserWewardChapter.bulkCreate(userChaptersData);
-  }
+      await UserWewardChapter.bulkCreate(userChaptersData);
+    }
 
     if (process.env.USE_MAIL === 'true') {
       const { subject, text, html } = welcomeEmailTemplate(firstname);
@@ -105,6 +105,29 @@ module.exports = {
         email: user.email,
         token
       }
+    });
+  },
+
+  getSecretQuestion: async (req, res, next) => {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const user = await User.findOne({
+      where: { email },
+      attributes: ["secretQuestion"]
+    });
+
+    if (!user || !user.secretQuestion) {
+      return res.status(404).json({ message: "No secret question found for this email" });
+    }
+
+    res.json({
+      success: true,
+      email,
+      question: user.secretQuestion
     });
   }
 };
