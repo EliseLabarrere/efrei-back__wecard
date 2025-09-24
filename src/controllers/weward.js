@@ -85,14 +85,14 @@ module.exports = {
         }
 
         const { id } = req.params;
-        const { en, fr } = req.body;
+        const { en, fr, isVintage, isEphemeral } = req.body;
 
         const chapter = await WewardChapter.findByPk(id);
         if (!chapter) {
             return res.status(404).json({ message: "Chapter not found" });
         }
 
-        await chapter.update({ en, fr });
+        await chapter.update({ en, fr, isVintage, isEphemeral });
         res.json({ success: true, data: chapter });
     },
 
