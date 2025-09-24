@@ -2,6 +2,20 @@ const { User, WewardChapter, UserWewardChapter } = require("../../models");
 const { literal } = require("sequelize");
 
 module.exports = {
+    // Récupérer tous les chapitres
+    getAllChapters: async (req, res) => {
+        const chapters = await WewardChapter.findAll({
+            attributes: ["id", "en", "fr", "isVintage", "isEphemeral"]
+        });
+
+        if (!chapters || chapters.length === 0) {
+            return res.status(404).json({ message: "No chapters found" });
+        }
+
+        res.json({ success: true, data: chapters });
+    },
+
+
     // Récupérer les chapitres d’un utilisateur donné (pas besoin d’auth)
     getUserChapters: async (req, res) => {
         const { userId } = req.params;

@@ -56,6 +56,36 @@ router.get('/user-chapters/:userId', wewardController.getUserChapters);
 
 /**
  * @swagger
+ * /api/weward/chapters:
+ *   get:
+ *     summary: Get all Weward chapters
+ *     tags:
+ *       - Weward Chapters
+ *     security: [] 
+ *     responses:
+ *       200:
+ *         description: List of all Weward chapters
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: true
+ *               data:
+ *                 - id: 1
+ *                   en: "Chapter EN"
+ *                   fr: "Chapitre FR"
+ *                   isVintage: false
+ *                   isEphemeral: false
+ *                 - id: 2
+ *                   en: "Another EN"
+ *                   fr: "Autre FR"
+ *                   isVintage: true
+ *                   isEphemeral: false
+ */
+router.get('/chapters', wewardController.getAllChapters);
+
+
+/**
+ * @swagger
  * /api/weward/my-chapters:
  *   post:
  *     summary: Update user's cards for a Weward chapter
