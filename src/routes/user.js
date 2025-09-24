@@ -67,6 +67,46 @@ router.put('/', authMiddleware, userController.editProfile);
 
 /**
  * @swagger
+ * /api/user/admin/{id}:
+ *   put:
+ *     summary: Set the isAdmin flag of a user (Admin only)
+ *     tags:
+ *       - User
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the user to modify
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - isAdmin
+ *             properties:
+ *               isAdmin:
+ *                 type: boolean
+ *                 example: true
+ *     responses:
+ *       200:
+ *         description: User admin status updated successfully.
+ *       403:
+ *         description: Forbidden - Only admins can perform this action.
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal server error.
+ */
+router.put('/admin/:id', authMiddleware, userController.setUserAdmin);
+
+/**
+ * @swagger
  * /api/user/forgot-password:
  *   post:
  *     summary: Request password reset

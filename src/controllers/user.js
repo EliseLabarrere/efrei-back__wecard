@@ -41,6 +41,29 @@ module.exports = {
     res.send({ message: "Profile updated successfully", user: updatedUser });
   },
 
+  setUserAdmin: async (req, res) => {
+    const { id } = req.params;
+    const { isAdmin } = req.body;
+
+    if (!req.user.isAdmin) {
+      return res.status(403).json({ message: "Forbidden: Admins only" });
+    }
+
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.isAdmin = isAdmin;
+    await user.save();
+
+    res.json({
+      success: true,
+      message: `User ${user.firstname} ${user.lastname} admin status updated`,
+      user: { id: user.id, firstname: user.firstname, lastname: user.lastname, email: user.email, isAdmin: user.isAdmin }
+    });
+  },
+
   getAllUsers: async (req, res) => {
     if (!req.user.isAdmin) {
       return res.status(403).send({ message: "Accès refusé" });
@@ -135,7 +158,7 @@ module.exports = {
     res.send({ message: "Mot de passe mis à jour avec succès." });
   },
 
-  deleteProfile : async (req, res) => {
+  deleteProfile: async (req, res) => {
     const { id } = req.params;
 
     // Récupérer l'utilisateur cible
