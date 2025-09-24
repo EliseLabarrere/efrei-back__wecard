@@ -25,7 +25,7 @@ module.exports = (sequelize) => {
     card8: { type: DataTypes.INTEGER, defaultValue: 0 },
     card9: { type: DataTypes.INTEGER, defaultValue: 0 },
   }, {
-    tableName: "user_weward_chapters", // ⚠️ important si ta table s’appelle comme ça en BDD
+    tableName: "user_weward_chapters",
     timestamps: true,
     createdAt: false,
     indexes: [

@@ -67,6 +67,7 @@ module.exports = (sequelize) => {
   User.associate = (models) => {
     User.hasMany(models.UserWewardChapter, {
       foreignKey: "idUser",
+      onDelete: "CASCADE",
       as: "UserWewardChapters"
     });
   };

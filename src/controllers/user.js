@@ -180,24 +180,16 @@ module.exports = {
   deleteProfile: async (req, res) => {
     const { id } = req.params;
 
-    // Récupérer l'utilisateur cible
     const targetUser = await User.findByPk(id);
 
     if (!targetUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Vérification : propriétaire ou admin
     if (req.user.id !== targetUser.id && !req.user.isAdmin) {
       return res.status(403).json({ message: "Forbidden" });
     }
 
-    // Suppression manuelle des relations si pas en CASCADE
-    await Comment.destroy({ where: { userId: targetUser.id } });
-    await Post.destroy({ where: { userId: targetUser.id } });
-    await Order.destroy({ where: { userId: targetUser.id } });
-
-    // Suppression du compte
     await targetUser.destroy();
 
     res.json({ message: "User and related data deleted successfully" });
