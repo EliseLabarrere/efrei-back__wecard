@@ -11,6 +11,42 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 /**
  * @swagger
+ * /api/user/all:
+ *   get:
+ *     summary: Get all users (Admin only)
+ *     tags:
+ *       - User
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of all users
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: true
+ *               data:
+ *                 - id: 1
+ *                   firstname: "John"
+ *                   lastname: "Doe"
+ *                   email: "john.doe@example.com"
+ *                   isAdmin: false
+ *                   accountWeward: "john123"
+ *                   accountInsta: "john_insta"
+ *                   accountDiscord: "john#1234"
+ *                 - id: 2
+ *                   firstname: "Jane"
+ *                   lastname: "Smith"
+ *                   email: "jane.smith@example.com"
+ *                   isAdmin: true
+ *                   accountWeward: "jane123"
+ *                   accountInsta: "jane_insta"
+ *                   accountDiscord: "jane#5678"
+ */
+router.get('/all', authMiddleware, userController.getAllUsers);
+
+/**
+ * @swagger
  * /api/user/me:
  *   get:
  *     summary: Get the current user's information

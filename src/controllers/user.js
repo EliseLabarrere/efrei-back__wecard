@@ -8,6 +8,25 @@ const profileUpdateEmail = require("../templates-mail/profileUpdateEmail");
 const resetPasswordEmail = require("../templates-mail/resetPasswordEmail");
 
 module.exports = {
+  getAllUsers: async (req, res) => {
+    const { id } = req.params;
+    const { isAdmin } = req.body;
+
+    if (!req.user.isAdmin) {
+      return res.status(403).json({ message: "Forbidden: Admins only" });
+    }
+
+    const users = await User.findAll({
+      attributes: ["id", "firstname", "lastname", "email", "isAdmin", "accountWeward", "accountInsta", "accountDiscord"]
+    });
+
+    if (!users || users.length === 0) {
+      return res.status(404).json({ message: "No users found" });
+    }
+
+    res.json({ success: true, data: users });
+  },
+
   getMyInfos: async (req, res, next) => {
     const user = await User.findByPk(req.user.id, {
       attributes: { exclude: ["password", "secretAnswer"] }
