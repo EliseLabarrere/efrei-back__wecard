@@ -204,4 +204,62 @@ router.post('/add-chapter', authMiddleware, wewardController.addWewardChapter);
  */
 router.post('/update-chapter/:id', authMiddleware, wewardController.updateWewardChapter);
 
+/**
+ * @swagger
+ * /api/weward/users-collection:
+ *   get:
+ *     summary: Get collection stats of 9 random users
+ *     tags:
+ *       - Weward Chapters
+ *     security: []
+ *     responses:
+ *       200:
+ *         description: Random user stats
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: true
+ *               data:
+ *                 - idUser: 1
+ *                   firstname: "John"
+ *                   totalCards: 27
+ *                   ownedCards: 15
+ *                   totalChapter: 3
+ *                   ownedCompletedChapter: 1
+ */
+router.get('/users-collection', wewardController.getRandomUserCollections);
+
+/**
+ * @swagger
+ * /api/weward/user-collection/{userId}:
+ *   get:
+ *     summary: Get collection stats of a user by ID
+ *     tags:
+ *       - Weward Chapters
+ *     security: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *         description: ID of the user
+ *     responses:
+ *       200:
+ *         description: User stats
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: true
+ *               data:
+ *                 idUser: 1
+ *                 firstname: "John"
+ *                 totalCards: 27
+ *                 ownedCards: 15
+ *                 totalChapter: 3
+ *                 ownedCompletedChapter: 1
+ */
+router.get('/user-collection/:userId', wewardController.getUserCollectionById);
+
 module.exports = router;

@@ -1,4 +1,5 @@
 const { User, WewardChapter, UserWewardChapter } = require("../../models");
+const { literal } = require("sequelize");
 
 module.exports = {
     // Récupérer les chapitres d’un utilisateur donné (pas besoin d’auth)
@@ -79,5 +80,54 @@ module.exports = {
 
         await chapter.update({ en, fr });
         res.json({ success: true, data: chapter });
+    },
+
+    // not a route
+    getUserStats: async (user) => {
+        const chapters = await UserWewardChapter.findAll({ where: { idUser: user.id } });
+
+        const totalChapter = chapters.length;
+        const totalCards = totalChapter * 9;
+
+        const ownedCards = chapters.reduce((sum, chapter) => {
+            const cards = Object.values(chapter.get()).slice(3, 12);
+            return sum + cards.filter(c => c !== 0).length;
+        }, 0);
+
+        const ownedCompletedChapter = chapters.filter(ch => {
+            const cards = Object.values(ch.get()).slice(3, 12);
+            return cards.every(c => c !== 0);
+        }).length;
+
+        return {
+            idUser: user.id,
+            firstname: user.firstname,
+            totalCards,
+            ownedCards,
+            totalChapter,
+            ownedCompletedChapter
+        };
+    },
+
+    getRandomUserCollections: async (req, res) => {
+        const users = await User.findAll({
+            attributes: ["id", "firstname"]
+        });
+
+        const data = await Promise.all(users.map(user => module.exports.getUserStats(user)));
+
+        res.json({ success: true, data });
+    },
+
+    getUserCollectionById: async (req, res) => {
+        const { userId } = req.params;
+        const user = await User.findByPk(userId, { attributes: ["id", "firstname"] });
+
+        if (!user) {
+            return res.status(404).json({ message: "Utilisateur non trouvé" });
+        }
+
+        const stats = await module.exports.getUserStats(user);
+        res.json({ success: true, data: stats });
     }
 };
