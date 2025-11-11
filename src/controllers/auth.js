@@ -98,13 +98,7 @@ module.exports = {
 
     res.status(200).send({
       message: "Successfully logged in",
-      user: {
-        id: user.id,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        email: user.email,
-        token
-      }
+      token,
     });
   },
 
