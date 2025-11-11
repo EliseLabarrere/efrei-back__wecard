@@ -10,14 +10,14 @@ const resetPasswordEmail = require("../templates-mail/resetPasswordEmail");
 module.exports = {
   getAllUsers: async (req, res) => {
     const { id } = req.params;
-    const { isAdmin } = req.body;
+    const { role } = req.body;
 
-    if (!req.user.isAdmin) {
+    if (!req.user.role) {
       return res.status(403).json({ message: "Forbidden: Admins only" });
     }
 
     const users = await User.findAll({
-      attributes: ["id", "firstname", "lastname", "email", "isAdmin", "accountWeward", "accountInsta", "accountDiscord"]
+      attributes: ["id", "firstname", "lastname", "email", "role", "accountWeward", "accountInsta", "accountDiscord"]
     });
 
     if (!users || users.length === 0) {
@@ -62,10 +62,10 @@ module.exports = {
 
   setUserAdmin: async (req, res) => {
     const { id } = req.params;
-    const { isAdmin } = req.body;
+    const { role } = req.body;
 
-    if (!req.user.isAdmin) {
-      return res.status(403).json({ message: "Forbidden: Admins only" });
+    if (req.user.role != "super-admin") {
+      return res.status(403).json({ message: "Forbidden: You do not have the necessary authorisation" });
     }
 
     const user = await User.findByPk(id);
@@ -73,18 +73,18 @@ module.exports = {
       return res.status(404).json({ message: "User not found" });
     }
 
-    user.isAdmin = isAdmin;
+    user.role = role;
     await user.save();
 
     res.json({
       success: true,
-      message: `User ${user.firstname} ${user.lastname} admin status updated`,
-      user: { id: user.id, firstname: user.firstname, lastname: user.lastname, email: user.email, isAdmin: user.isAdmin }
+      message: `User ${user.firstname} ${user.lastname} role updated`,
+      user: { id: user.id, firstname: user.firstname, lastname: user.lastname, email: user.email, role: user.role }
     });
   },
 
   getAllUsers: async (req, res) => {
-    if (!req.user.isAdmin) {
+    if (!req.user.role) {
       return res.status(403).send({ message: "Accès refusé" });
     }
 
@@ -186,7 +186,7 @@ module.exports = {
       return res.status(404).json({ message: "User not found" });
     }
 
-    if (req.user.id !== targetUser.id && !req.user.isAdmin) {
+    if (req.user.id !== targetUser.id && !req.user.role) {
       return res.status(403).json({ message: "Forbidden" });
     }
 

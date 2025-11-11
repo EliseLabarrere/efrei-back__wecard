@@ -27,9 +27,9 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    isAdmin: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+    role: {
+      type: DataTypes.STRING,
+      allowNull: true
     },
     resetPasswordToken: {
       type: DataTypes.STRING,
@@ -49,7 +49,7 @@ module.exports = (sequelize) => {
     },
     accountWeward: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: false
     },
     accountInsta: {
       type: DataTypes.STRING,

@@ -65,7 +65,13 @@ module.exports = {
       const { subject, text, html } = welcomeEmailTemplate(firstname);
       await sendEmail({ to: email, subject, text, html });
 
-      const admins = await User.findAll({ where: { isAdmin: 1 } });
+      const admins = await User.findAll({
+        where: {
+          role: {
+            [Op.in]: ['admin', 'super-admin']
+          }
+        }
+      });
       for (const admin of admins) {
         await sendEmail({
           to: admin.email,
@@ -91,7 +97,7 @@ module.exports = {
     }
 
     const token = jwt.sign(
-      { id: user.id, email: user.email, isAdmin: user.isAdmin },
+      { id: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );

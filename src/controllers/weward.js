@@ -57,7 +57,7 @@ module.exports = {
 
     // Ajouter un nouveau chapitre (admin only)
     addWewardChapter: async (req, res) => {
-        if (!req.user.isAdmin) {
+        if (!req.user.role) {
             return res.status(403).json({ message: "Forbidden" });
         }
 
@@ -80,7 +80,7 @@ module.exports = {
 
     // Mettre à jour un chapitre (admin only)
     updateWewardChapter: async (req, res) => {
-        if (!req.user.isAdmin) {
+        if (!req.user.role) {
             return res.status(403).json({ message: "Forbidden" });
         }
 

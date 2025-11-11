@@ -30,7 +30,7 @@ const authMiddleware = require("../middleware/authMiddleware");
  *                   firstname: "John"
  *                   lastname: "Doe"
  *                   email: "john.doe@example.com"
- *                   isAdmin: false
+ *                   role: "admin"
  *                   accountWeward: "john123"
  *                   accountInsta: "john_insta"
  *                   accountDiscord: "john#1234"
@@ -38,7 +38,7 @@ const authMiddleware = require("../middleware/authMiddleware");
  *                   firstname: "Jane"
  *                   lastname: "Smith"
  *                   email: "jane.smith@example.com"
- *                   isAdmin: true
+ *                   role: null
  *                   accountWeward: "jane123"
  *                   accountInsta: "jane_insta"
  *                   accountDiscord: "jane#5678"
@@ -105,7 +105,7 @@ router.put('/', authMiddleware, userController.editProfile);
  * @swagger
  * /api/user/admin/{id}:
  *   put:
- *     summary: Set the isAdmin flag of a user (Admin only)
+ *     summary: Set the role flag of a user (Admin only)
  *     tags:
  *       - User
  *     security:
@@ -124,11 +124,11 @@ router.put('/', authMiddleware, userController.editProfile);
  *           schema:
  *             type: object
  *             required:
- *               - isAdmin
+ *               - role
  *             properties:
- *               isAdmin:
- *                 type: boolean
- *                 example: true
+ *               role:
+ *                 type: string
+ *                 example: "admin"
  *     responses:
  *       200:
  *         description: User admin status updated successfully.
