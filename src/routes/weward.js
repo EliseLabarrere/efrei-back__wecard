@@ -236,6 +236,39 @@ router.post('/update-chapter/:id', authMiddleware, wewardController.updateWeward
 
 /**
  * @swagger
+ * /api/weward/delete-chapter/{id}:
+ *   post:
+ *     summary: Admin deletes a Weward chapter by ID (en/fr)
+ *     tags:
+ *       - Weward Chapters
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID of the chapter to delete
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *     responses:
+ *       200:
+ *         description: Chapter deleted
+ *         content:
+ *           application/json:
+ *             example:
+ *               success: true
+ *               data:
+ *                 id: 1
+ *                 en: "Delete Chapter EN"
+ *                 fr: "Chapitre FR mis à jour"
+ *                 isVintage: false
+ *                 isEphemeral: false
+ */
+router.get('/delete-chapter/:id', authMiddleware, wewardController.deleteWewardChapter);
+
+/**
+ * @swagger
  * /api/weward/users-collection:
  *   get:
  *     summary: Get collection stats of 9 random users

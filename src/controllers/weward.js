@@ -96,6 +96,23 @@ module.exports = {
         res.json({ success: true, data: chapter });
     },
 
+    // Mettre à jour un chapitre (admin only)
+    deleteWewardChapter: async (req, res) => {
+        if (!req.user.role) {
+            return res.status(403).json({ message: "Forbidden" });
+        }
+
+        const { id } = req.params;
+
+        const chapter = await WewardChapter.findByPk(id);
+        if (!chapter) {
+            return res.status(404).json({ message: "Chapter not found" });
+        }
+
+        await chapter.destroy();
+        res.json({ success: true, data: chapter });
+    },
+
     // not a route
     getUserStats: async (user) => {
         const chapters = await UserWewardChapter.findAll({ where: { idUser: user.id } });
