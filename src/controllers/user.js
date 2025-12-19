@@ -9,15 +9,12 @@ const resetPasswordEmail = require("../templates-mail/resetPasswordEmail");
 
 module.exports = {
   getAllUsers: async (req, res) => {
-    const { id } = req.params;
-    const { role } = req.body;
-
     if (!req.user.role) {
       return res.status(403).json({ message: "Forbidden: Admins only" });
     }
 
     const users = await User.findAll({
-      attributes: ["id", "firstname", "lastname", "email", "role", "accountWeward", "accountInsta", "accountDiscord"]
+      attributes: { exclude: ["password", "secretAnswer"] }
     });
 
     if (!users || users.length === 0) {
@@ -82,19 +79,6 @@ module.exports = {
       user: { id: user.id, firstname: user.firstname, lastname: user.lastname, email: user.email, role: user.role }
     });
   },
-
-  getAllUsers: async (req, res) => {
-    if (!req.user.role) {
-      return res.status(403).send({ message: "Accès refusé" });
-    }
-
-    const users = await User.findAll({
-      attributes: { exclude: ["password", "secretAnswer"] }
-    });
-
-    res.send(users);
-  },
-
 
   forgotPassword: async (req, res, next) => {
     const { email } = req.body;
